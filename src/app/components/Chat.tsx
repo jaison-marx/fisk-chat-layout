@@ -7,13 +7,13 @@ interface Message {
 
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([
-    { text: 'Hello! How can I help you today?', sender: 'bot' },
+    { text: 'Ola, como posso te ajudar hoje?', sender: 'bot' },
   ]);
   const [input, setInput] = useState<string>('');
 
   const suggestions = [
     'Solicitar Boleto',
-    'AValiar meu progresso',
+    'Avaliar meu progresso',
     'Unidade mais proxima',
   ];
 
