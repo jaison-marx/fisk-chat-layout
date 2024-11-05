@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Message {
   text: string;
@@ -7,7 +7,7 @@ interface Message {
 
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([
-    { text: 'Ola, como posso te ajudar hoje?', sender: 'bot' },
+    { text: 'Ola! Como posso te ajudar?', sender: 'bot' },
   ]);
   const [input, setInput] = useState<string>('');
 
@@ -16,6 +16,21 @@ export default function Chat() {
     'Avaliar meu progresso',
     'Unidade mais proxima',
   ];
+
+  // Ref para rolar automaticamente até a última mensagem
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  // Função para rolar para o fim do chat
+  const scrollToBottom = () => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Efeito para rolar para o fim sempre que a lista de mensagens mudar
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSend = (messageText: string) => {
     if (messageText.trim()) {
@@ -31,7 +46,7 @@ export default function Chat() {
       setTimeout(() => {
         setMessages((prevMessages) => [
           ...prevMessages,
-          { text: 'Serviço Fisk', sender: 'bot' },
+          { text: 'Serviço fisk', sender: 'bot' },
         ]);
       }, 1000);
     }
@@ -46,13 +61,15 @@ export default function Chat() {
             key={index}
             className={`mb-2 p-2 max-w-xs ${
               message.sender === 'user'
-                ? 'ml-auto bg-blue-500 text-white'
-                : 'mr-auto bg-gray-300 text-black'
+                ? 'ml-auto bg-theme text-white'
+                : 'mr-auto bg-gray-300 text-theme'
             } rounded-lg`}
           >
             {message.text}
           </div>
         ))}
+        {/* Elemento invisível para rolar até o fim */}
+        <div ref={bottomRef} />
       </div>
 
       {/* Input e Botões de Envio */}
@@ -62,12 +79,12 @@ export default function Chat() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && handleSend(input)}
-          placeholder="Digite sua mensagem..."
+          placeholder="Digite Algo..."
           className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           onClick={() => handleSend(input)}
-          className="mt-2 w-full bg-theme text-white py-2 rounded-lg hover:bg-blue-600"
+          className="mt-2 w-full bg-theme text-white py-2 rounded-lg"
         >
           Enviar
         </button>
