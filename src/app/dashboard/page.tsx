@@ -1,7 +1,7 @@
 'use client';
 import Header from '../components/Header';
-import Chat from '../components/Chat';
 import Footer from '../components/Footer';
+import ChatApp from '../components/ChatApp';
 
 
 export default function Dashboard() {
@@ -10,7 +10,7 @@ export default function Dashboard() {
       <Header/>
     
       <main className="flex-grow">
-        <Chat/>
+        <ChatApp/>
       </main>
       {/* Footer */}
       <Footer/>

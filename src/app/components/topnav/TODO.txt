@@ -1,0 +1,5 @@
+organizar os metodos no arquivo chatapp
+
+realizar a simulação de conversa entre o fisk atendente e esta aplicação
+
+- organizar cors para origem deste app

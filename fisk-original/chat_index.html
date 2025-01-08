@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Cache-Control"
+	content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<!-- Mobile Specific Metas -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+<title>FISK, SGF Apps</title>
+
+<style type="text/css">
+body, html {
+	padding: 0px;
+	font-family: Lucida Sans, Lucida Grande, Arial !important;
+	font-size: 12px !important;
+	margin: 0;
+	overflow: hidden;
+	width: 100%;
+	height: 97%;
+}
+
+.inner {
+	border: 1px solid black;
+}
+
+#appLayout {
+	width: 100%;
+	height: 100%;
+}
+
+.bubble {
+	background-color: #F2F2F2;
+	border-radius: 5px;
+	box-shadow: 0 0 6px #B2B2B2;
+	display: inline-block;
+	padding: 10px 18px;
+	position: relative;
+	vertical-align: top;
+}
+
+.bubbletitle {
+	background-color: #b3eefb;
+	border-radius: 5px;
+	box-shadow: 0 0 6px #B2B2B2;
+	display: table;
+	padding: 10px 18px;
+	margin: 0 auto;
+	position: relative;
+	vertical-align: top;
+}
+
+.bubble::before {
+	background-color: #F2F2F2;
+	content: "\00a0";
+	display: block;
+	height: 16px;
+	position: absolute;
+	top: 11px;
+	transform: rotate(29deg) skew(-35deg);
+	-moz-transform: rotate(29deg) skew(-35deg);
+	-ms-transform: rotate(29deg) skew(-35deg);
+	-o-transform: rotate(29deg) skew(-35deg);
+	-webkit-transform: rotate(29deg) skew(-35deg);
+	width: 20px;
+}
+
+.me {
+	background-color: #fdfdfd;
+	float: left;
+	margin: 5px 45px 5px 20px;
+}
+
+.me2 {
+	float: left;
+	margin: 5px 45px 5px 20px;
+}
+
+.me::before {
+	background-color: #fdfdfd;
+	box-shadow: -2px 2px 2px 0 rgba(178, 178, 178, .4);
+	left: -9px;
+}
+
+.you {
+	background-color: #b1d7be;
+	float: right;
+	margin: 5px 20px 5px 45px;
+}
+
+.you.image {
+	background-color: #fdfdfd;
+	float: right;
+	margin: 5px 20px 5px 45px;
+}
+
+.you2 {
+	float: right;
+	margin: 5px 20px 5px 45px;
+}
+
+.you::before {
+	background-color: #b1d7be;
+	box-shadow: 2px -2px 2px 0 rgba(178, 178, 178, .4);
+	right: -9px;
+}
+
+sub {
+	vertical-align: sub;
+	font-size: xx-small;
+	color: #767676;
+	margin-left: 8px;
+}
+
+.thumb {
+	height: 75px;
+	border: 0;
+	margin: 10px 5px 0 0;
+	cursor: pointer;
+}
+
+/* #overlay { */
+/*   position: fixed; */
+/*   top: 95px; */
+/*   left: 0; */
+/*   width: 100%; */
+/*   height: 100%; */
+/*   background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+*
+/
+/*   display: flex; */
+/*   justify-content: center; */
+/*   align-items: center; */
+/*   z-index: 100000; /* Aparece acima do restante */
+ 
+*
+/
+/* } */
+</style>
+
+<script type="text/javascript" id="jsChat" src="../js/websocket.js"></script>
+
+</head>
+
+<body class="claro">
+
+	<div id="appLayout" data-dojo-type="dijit/layout/BorderContainer"
+		data-dojo-props="design: 'headline'"
+		style="width: 100%; height: 100%;">
+
+		<div data-dojo-type="dijit/layout/ContentPane"
+			data-dojo-props="region:'top', splitter:false">
+			<img alt="" src="/sgf/Images/FiskTagLine.PNG" style="float: right;">
+		</div>
+		<div id="case_chat_off"></div>
+		<div data-dojo-type="dijit/layout/TabContainer"
+			data-dojo-props="region: 'center', tabPosition: 'top'"
+			style="max-height: 100%;">
+
+			<div data-dojo-type="dijit/layout/ContentPane" id="paneChatRegister"
+				title="SGF" style="margin-top: 2em; text-align: center;">
+
+
+				<div data-dojo-type="dijit/form/Form" id="formChatRegister"
+					method="post" style="display: none;">
+
+
+					<img src="/sgf/Images/account_and_control.png"
+						alt="Fisk, centro de ensino"
+						style="float: left; border: none; margin-left: 30%; margin-top: 1%;" />
+					<div class="inner"
+						style="max-height: 100%; width: 50%; margin: 0 auto;">
+						<h3 style="padding-top: 2em; margin-right: 15%;">Chat de
+							Atendimento</h3>
+						<p>Favor informar dados básicos de acesso</p>
+						<p>
+							<strong><label for="no_primeiro"
+								style="display: inline-block; width: 100px; text-align: right; margin-top: 0.2em;">Primeiro
+									nome:&nbsp;</label></strong> <input type="text" id="no_primeiro"
+								name="no_primeiro" data-dojo-type="dijit/form/ValidationTextBox"
+								data-dojo-props="placeHolder:'Primeiro nome', required:'true'"
+								style="width: 42em;" /><br>
+						</p>
+						<p>
+							<strong><label for="no_sobrenome"
+								style="display: inline-block; width: 100px; text-align: right; margin-top: 0.2em;">Sobrenome:&nbsp;</label></strong>
+							<input type="text" id="no_sobrenome" name="no_sobrenome"
+								data-dojo-type="dijit/form/ValidationTextBox"
+								data-dojo-props="placeHolder:'Sobrenome', required:'true'"
+								style="width: 42em;" /><br>
+						</p>
+						<p>
+							<strong><label for="dc_email"
+								style="display: inline-block; width: 100px; text-align: right; margin-top: 0.2em;">e-Mail:&nbsp;</label></strong>
+							<input type="text" id="dc_email" name="dc_email"
+								data-dojo-type="dijit/form/ValidationTextBox"
+								data-dojo-props="placeHolder:'e-Mail', required:'true'"
+								style="width: 42em;" /><br>
+						</p>
+						<p>
+							<input name="checkUseTerms" id="checkUseTerms" value="1"
+								type="checkbox" /><label>Eu concordo com os <a
+								href="javascript: showDialogUseTerms();">termos de uso</a></label>
+						</p>
+						<p>
+							<input type="hidden" id="cd_pessoa" name="cd_pessoa" /><br>
+							<input type="hidden" id="no_usuario" name="no_usuario" /><br>
+							<input type="hidden" id="cd_depto" name="cd_depto" /><br>
+						<div id="actionBarRegister" class="dijitDialogPaneActionBar">
+							<p>
+								<button id="buttonChatRegister"
+									data-dojo-type="dojox/form/BusyButton"
+									data-dojo-props="disabled:true, onClick:setGuest, busyLabel:'Conectando...'">Entrar</button>
+								<button id="buttonCancel" data-dojo-type="dijit/form/Button"
+									data-dojo-props="disabled:false, onClick:cancelChat">Cancelar</button>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="inner"
+					style="max-height: 100%; width: 35%; margin: 0 auto; display: none;"
+					id="dialogChat">
+					<div data-dojo-type="dijit/ProgressBar" style="width: auto;"
+						id="progressChatQueue" data-dojo-props="indeterminate: true"></div>
+					<p>
+					<div id="chatMessage"
+						style="height: 28em; max-width: 100%; overflow: scroll; margin: 5px 5px 5px 5px;">
+					</div>
+					<input id="textChat" name="textChat" value="" type="text"
+						data-dojo-type="dijit/form/Textarea"
+						style="display: none; width: 100%;"><br>
+					<div id="actionBarChatMessage" class="dijitHidden">
+						<div id="ar_anexo"></div>
+						<p>
+							<button id="buttonSendMessage"
+								data-dojo-type="dojox/form/BusyButton"
+								data-dojo-props="disabled:true, onClick:send_message, busyLabel:'Enviando...'">Enviar</button>
+							<button id="buttonExitChat" data-dojo-type="dijit/form/Button"
+								data-dojo-props="onClick:showDialogExitChat">Sair</button>
+						</p>
+						<div id="no_anexo"></div>
+					</div>
+					<div id="actionBarChat" class="dijitDialogPaneActionBar">
+						<p>
+							<button id="buttonBeginChat"
+								data-dojo-type="dojox/form/BusyButton"
+								data-dojo-props="disabled:true, onClick:openChat, busyLabel:'Conectando...'">Entrar</button>
+							<button id="buttonCancelChat" data-dojo-type="dijit/form/Button"
+								data-dojo-props="disabled:false, onClick:cancelChat">Cancelar</button>
+						</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="dijitHidden">
+		<div data-dojo-type="dijit/Dialog" style="max-width: 80%;"
+			data-dojo-props="title:'Visualizar Arquivo'" id="dialogFile">
+			<div class="dijitDialogPaneContentArea" style="overflow: auto;">
+				<img id="imageFile" alt="" src="">
+			</div>
+			<!-- 
+			<div  class="dijitDialogPaneActionBar">
+				<p>
+					<button id="buttonDialogImage" type="button" data-dojo-type="dijit/form/Button" data-dojo-props="onClick:hideDialogFile">Ok</button>
+				</p>
+			</div>
+			 -->
+		</div>
+	</div>
+
+	<div class="dijitHidden">
+		<div data-dojo-type="dijit/Dialog" style="width: 600px;"
+			data-dojo-props="title:'Termos de Uso', onCancel:hideDialogUseTerms"
+			id="dialogUseTerms">
+			<div id="divUseTerms"
+				style="height: 22em; overflow-y: scroll; border: 1px solid #769dc4; padding: 0 10px; width: 560px;">
+				<p>&nbsp;</p>
+			</div>
+			<div class="dijitDialogPaneActionBar">
+				<p>
+					<button id="buttonUseTerms" type="button"
+						data-dojo-type="dijit/form/Button"
+						data-dojo-props="onClick:hideDialogUseTerms">Ok</button>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div id="divChatBegin" class="dijitHidden">
+		<img id="imgChatBegin" src="../Images/chat/chat_begin.png" />
+		<p id="pChatBegin" style="margin-top: 1em; margin-bottom: 1em;">
+			Chat de Atendimento.<br> <br> Para entrar na sala de
+			atendimento favor clicar no botão de ação "Entrar". Se desejar sair
+			do chat e/ou fechar o formulário clique em "Cancelar".
+		</p>
+	</div>
+
+	<div class="dijitHidden">
+		<div data-dojo-type="dijit/Dialog" style="width: 500px;"
+			data-dojo-props="title:'Sair do Chat'" id="dialogExitChat">
+			<div
+				style="height: 80px; overflow-y: scroll; padding: 0 10px; width: 460px;">
+				<p>&nbsp;</p>
+				<p>
+					Você deseja sair do chat de atendimento ?<br>
+				</p>
+			</div>
+			<div class="dijitDialogPaneActionBar">
+				<p>
+					<button id="buttonConfirmExitChat" type="button"
+						data-dojo-type="dijit/form/Button"
+						data-dojo-props="onClick:cancelChat">Ok</button>
+					<button id="buttonCancelExitChat" type="button"
+						data-dojo-type="dijit/form/Button"
+						data-dojo-props="onClick:hideDialogExitChat">Cancelar</button>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/sgf/js/helper_jquery.js"></script>
+	<script type="text/javascript" src="/sgf/js/helper_dojo.js"></script>
+
+	<script type="text/javascript">
+
+	isChatActive();
+	
+	function isChatActive() {
+		
+		$.ajax({
+			url : "../jaxrs/bandeira/chat/enabled",
+			dataType : "json",
+			method : "get",
+			async : true,
+			success : function(res, status, xhr) {
+				
+			if(res.id_enabled == 0) {
+						activeMessageIfChatInactive();
+			}}
+});
+		
+		
+	};
+	
+	function activeMessageIfChatInactive(){
+		
+		$(document).ready(function () {
+			$.ajax({
+				url: "/sgf/jaxrs/bandeira/chat/mensagem",
+				method: "get",
+				dataType: "json", 
+				success: function (res) {
+							getHTMLIfInactiveChat(res.dc_mensagem);
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					// Exibe mensagem de erro no elemento em caso de falha
+					getAlternativeHTMLInCaseOfError();
+				}
+			});
+		});
+		
+		function getHTMLIfInactiveChat(message) {
+			document.getElementById('formChatRegister').innerHTML = message;
+		
+		
+		}
+		
+		function getAlternativeHTMLInCaseOfError() {
+			document.getElementById('formChatRegister').innerHTML = `<h4>	Chat indisponível no momento...</h4>`;
+		}
+	};
+</script>
+
+	<script type="text/javascript">
+		var baseUrl = location.pathname.replace(/\/[^/]+$/, "/../js/");
+
+		var dojoConfig = {
+			parseOnLoad : false,
+			has : {
+				"dojo-firebug" : true,
+				"dojo-debug-messages" : true
+			},
+			async : true,
+			locale : 'pt-br',
+			packages : [ {
+				name : "dojo",
+				location : baseUrl + "lib/dojo"
+			}, {
+				name : "dijit",
+				location : baseUrl + "lib/dijit"
+			}, {
+				name : "dojox",
+				location : baseUrl + "lib/dojox"
+			} ]
+		};
+	</script>
+
+	<script type="text/javascript">
+		require([ "dojox/form/BusyButton" ]);
+
+		getCookieAccount = function() {
+
+			require([ "dojo/cookie", "dijit/registry" ], function(cookie,
+					registry) {
+
+				if (cookie("no_usuario") != undefined) {
+					//registry.byId('j_username').set("value", cookie("no_usuario"));
+				}
+
+			});
+		};
+
+		function makeTimeout(timeoutInMiliseconds) {
+			console.log("timeoutInMiliseconds: " + timeoutInMiliseconds);
+			return window.setTimeout(function() {
+				// do stuff
+				console.log("expirou");
+			}, timeoutInMiliseconds)
+		};
+
+		require(
+				[ "dijit/registry", "dojo/cookie", "dojo/dom", "dojo/on",
+						"dojo/parser", "dojox/widget/Standby",
+						"dijit/layout/BorderContainer",
+						"dijit/layout/ContentPane",
+						"dijit/layout/TabContainer", "dojo/domReady!" ],
+				function(registry, cookie, dom, on, parser, Standby) {
+
+					parser
+							.parse()
+							.then(
+									function(instances) {
+
+										// https://sgfapps.fisk.com.br:156/
+										// https://nlb-sgfapps.fisk.com.br:44380/
+										// https://fisk.com.br/
+										const dc_origem = (document.referrer ? document.referrer
+												: "");
+										var n = dc_origem.search("sgfapps");
+
+										var url_string = window.location.href
+										var url = new URL(url_string);
+										const API_ENDPOINT = encodeURI(url.searchParams
+												.get("p_dc_url"));
+										const cdDepto = url.searchParams
+												.get("cd_depto");
+										const cdPessoa = (url.searchParams
+												.get("cd_pessoa") !== null ? url.searchParams
+												.get("cd_pessoa")
+												: cookie("cd_pessoa"));
+										const noUsuario = (url.searchParams
+												.get("no_usuario") !== null ? url.searchParams
+												.get("no_usuario")
+												: cookie("no_usuario"));
+										const cdPapel = (url.searchParams
+												.get("cd_papel") !== null ? url.searchParams
+												.get("cd_papel")
+												: cookie("cd_papel"));
+
+										var theStandby = new Standby({
+											target : "paneChatRegister"
+										});
+
+										document.body
+												.appendChild(theStandby.domNode);
+										theStandby.startup();
+										theStandby.show();
+
+										$
+												.ajax(
+														{
+															type : 'GET',
+															url : '../jaxrs/bandeira/host',
+															dataType : "json",
+														})
+												.then(
+														function(pData) {
+
+															theStandby.hide();
+
+															//if (pData && pData.id_session_valid == true && cdPapel && cdPapel === "10" && noUsuario) {
+															if (cdPapel
+																	&& cdPapel === "10"
+																	&& noUsuario) {
+
+																$("#cd_pessoa")
+																		.val(
+																				cdPessoa);
+																$("#no_usuario")
+																		.val(
+																				noUsuario);
+																$("#cd_depto")
+																		.val(
+																				n == -1 ? 2
+																						: cdDepto);
+
+																showChat();
+
+															} else {
+
+																$(
+																		"#formChatRegister")
+																		.show();
+																$(
+																		"#checkUseTerms")
+																		.removeAttr(
+																				"checked");
+																$(
+																		'#formChatRegister :checkbox')
+																		.change(
+																				function() {
+																					registry
+																							.byId(
+																									"buttonChatRegister")
+																							.set(
+																									"disabled",
+																									true);
+																					if (this.checked) {
+																						registry
+																								.byId(
+																										"buttonChatRegister")
+																								.cancel();
+																						registry
+																								.byId(
+																										"buttonChatRegister")
+																								.set(
+																										"disabled",
+																										false);
+																					}
+																				});
+
+															}
+
+														},
+														function(xhr, status,
+																error) {
+
+														});
+
+									});
+
+				});
+
+		function showChat() {
+			require([ "dijit/registry" ], function(registry) {
+				if ($('#chatMessage #imgChatBegin').length === 0) {
+					$("#chatMessage").prepend($("#divChatBegin").html());
+				}
+				connectSocket($("#cd_pessoa").val(), $("#no_usuario").val(), $(
+						"#cd_depto").val());
+				$("#progressChatQueue").hide();
+				$("#dialogChat").show();
+				setFile();
+			});
+		}
+
+		function setGuest() {
+			require([ "dijit/registry" ], function(registry) {
+
+				var formRegister = registry.byId("formChatRegister");
+
+				if (!formRegister.validate()) {
+					setTimeout(function() {
+						registry.byId("buttonChatRegister").resetTimeout();
+					}, 500);
+				} else {
+					setChatRegister();
+				}
+
+			});
+		}
+
+		function showDialogUseTerms() {
+
+			require([ "dijit/registry", "dojox/widget/Standby" ], function(
+					registry, Standby) {
+
+				registry.byId("dialogUseTerms").show();
+
+				var theStandby = new Standby({
+					target : "dialogUseTerms"
+				});
+
+				document.body.appendChild(theStandby.domNode);
+				theStandby.startup();
+				theStandby.show();
+
+				$.ajax({
+					url : "../jaxrs/bandeira/chat/use_terms",
+					dataType : "json",
+					method : "get",
+					async : true,
+					success : function(res, status, xhr) {
+
+						theStandby.hide();
+
+						$("#divUseTerms").html(res.dc_termo_uso);
+
+					}
+				});
+
+			});
+
+		}
+
+		function hideDialogUseTerms() {
+
+			require([ "dijit/registry" ], function(registry) {
+				registry.byId("dialogUseTerms").hide();
+			});
+
+		}
+
+		function cancelChat() {
+
+			require([ "dijit/registry" ], function(registry) {
+
+				if (websocket != null) {
+					registry.byId("dialogExitChat").hide();
+					websocket.close();
+					websocket = null;
+					registry.byId("no_primeiro").reset();
+					registry.byId("no_sobrenome").reset();
+					registry.byId("dc_email").reset();
+				}
+
+				if ($("#cd_depto").val() === "6") {
+					$.ajax({
+						type : 'GET',
+						url : '../jaxrs/bandeira/logout',
+						dataType : "html",
+						success : function(pData) {
+							//if(window.opener){
+							//	window.top.close();
+							//}		       	
+						}
+					});
+				}
+
+				if (window.opener) {
+					window.top.close();
+				}
+
+				$("#dialogChat").hide();
+				registry.byId("textChat").reset();
+				$("#chatMessage").empty();
+				$("#actionBarChat").attr("class", "dijitDialogPaneActionBar");
+				$("#actionBarChatMessage").attr("class", "dijitHidden");
+				$("#textChat").hide();
+
+				// chat register
+				registry.byId("buttonChatRegister").cancel();
+				registry.byId("buttonBeginChat").set("disabled", true);
+				registry.byId("buttonChatRegister").set("disabled", true);
+
+				if ($("#checkUseTerms").is(':checked'))
+					registry.byId("buttonChatRegister").set("disabled", false);
+
+				$("#formChatRegister").show();
+
+			});
+
+		}
+
+		function setChatRegister() {
+
+			require([ "dijit/registry" ], function(registry) {
+
+				$.ajax({
+					url : "../jaxrs/pessoas/crm",
+					dataType : "json",
+					method : "put",
+					data : {
+						"p_no_primeiro" : registry.byId("no_primeiro").get(
+								"value"),
+						"p_no_sobrenome" : registry.byId("no_sobrenome").get(
+								"value"),
+						"p_dc_email" : registry.byId("dc_email").get("value")
+					},
+					async : true,
+					success : function(res, status, xhr) {
+
+						$("#cd_pessoa").val(res.cd_pessoa);
+						$("#no_usuario").val(res.no_usuario);
+						$("#cd_depto").val(res.cd_depto);
+
+						$("#formChatRegister").hide();
+						registry.byId("buttonBeginChat").set("disabled", true);
+
+						showChat();
+
+					},
+					error : function(res, status, xhr) {
+
+					}
+				});
+
+			})
+
+		}
+
+		function openChat() {
+			require([ "dijit/registry" ], function(registry) {
+
+				//var timeoutId = makeTimeout(60000);				
+				//console.log("timeoutId: " + timeoutId);				
+
+				$("#chatMessage").empty();
+
+				//connectSocket($("#cd_pessoa").val(), $("#no_usuario").val());	
+
+				websocket.send(JSON.stringify({
+					no_acao : "open",
+					dc_mensagem : registry.byId("textChat").get("value"),
+					nm_sessao : v_nm_sessao,
+					nm_sessao_destino : +v_nm_sessao_destino
+				}));
+
+			});
+		}
+
+		function hideDialogFile() {
+			require([ "dijit/registry" ], function(registry) {
+				registry.byId("dialogFile").hide();
+			});
+		}
+
+		function showDialogExitChat() {
+			require([ "dijit/registry" ], function(registry) {
+				registry.byId("dialogExitChat").show();
+			});
+		}
+
+		function hideDialogExitChat() {
+			require([ "dijit/registry" ], function(registry) {
+				registry.byId("dialogExitChat").hide();
+			});
+		}
+
+		function setFile() {
+
+			require([ "dijit/registry", "dojo/_base/connect",
+					"dojo/_base/array", "dojo/on", "dojo/dom",
+					"dojox/form/Uploader", "dojox/form/uploader/FileList",
+					"dojox/widget/Standby" ], function(registry, conn,
+					arrayUtil, on, dom, Uploader, FileList, Standby) {
+
+				var theStandbyUpload = null;
+
+				if (registry.byId("no_anexo") == undefined) {
+
+					var upload = new Uploader({
+						name : "ar_anexo",
+						label : " + ",
+						style : "float: left;",
+						multiple : false,
+						uploadOnSelect : false
+					}, "ar_anexo");
+
+					upload.startup();
+					upload.setAttribute('accept', 'image/*');
+
+					var list = new FileList({
+						uploader : upload,
+						style : "float: left;",
+						headerFilename : "Arquivo",
+						headerFilesize : "Tamanho",
+						headerType : "Tipo"
+					}, "no_anexo");
+
+					list.startup();
+
+				}
+
+			});
+
+		}
+	</script>
+
+	<!-- End Document -->
+</body>
+</html>
